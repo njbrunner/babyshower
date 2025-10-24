@@ -1,0 +1,15 @@
+:root {
+  --secondary: #ebdfd3;
+}
+
+body {
+    background-color: var(--secondary);
+}
+
+.table th {
+  background-color: var(--secondary);
+}
+
+.table td {
+    background-color: var(--secondary);
+}
