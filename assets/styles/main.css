@@ -50,13 +50,6 @@ a {
   padding: 8px !important;
 }
 
-/* @media only screen and (max-width: 768px) {
-  .card-main {
-    margin-top: 50px;
-    margin-bottom: 50px;
-  }
-} */
-
 @media only screen and (max-width: 600px) {
   .image-test {
     margin-left: -30%;
@@ -161,4 +154,15 @@ label.label-styled {
 .toast-error {
   background-color: lightcoral;
   color: white;
+}
+
+#rsvpModal .rsvp-row .invalid-feedback {
+  width: 100%;
+  text-align: center;
+  display: none;
+  margin-top: 0.5rem;
+}
+
+#rsvpForm.was-validated .rsvp-row:has(input[name="rsvp-selection"]:invalid) .invalid-feedback {
+  display: block;
 }
