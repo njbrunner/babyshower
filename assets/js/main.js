@@ -16,27 +16,65 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const nameContainer = document.getElementById("nameContainer");
+const addGuestBtn = document.getElementById("addGuestBtn");
+const submitRSVPBtn = document.getElementById("submitRSVPBtn");
+const template = document.getElementById("guestRowTemplate");
+let guestIndex = 0;
+
+if (addGuestBtn) {
+  addGuestBtn.addEventListener("click", () => {
+    guestIndex += 1;
+    const html = template.innerHTML.replaceAll("{i}", String(guestIndex));
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = html.trim();
+    const row = wrapper.firstElementChild;
+    const button = row.getElementsByTagName("button")[0];
+
+    nameContainer.appendChild(row);
+    registerRemoveGuestBtn(button, row);
+  });
+}
+
+if (submitRSVPBtn) {
+  submitRSVPBtn.addEventListener("click", () => {
+    submitRSVP();
+  });
+}
 
 export async function submitRSVP() {
   if (validate()) {
-    try {
-      await addDoc(collection(db, "guests"), getGuestRSVP());
-      resetForm();
-      createToast("RSVP submitted successfully!", "success");
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      createToast("There was an error submitting your RSVP.", "error");
+    for (let i = 0; i <= guestIndex; i++) {
+      let guest = getGuestRSVP(i);
+      console.log(guest);
+      try {
+        await addDoc(collection(db, "guests"), guest);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+        createToast("There was an error submitting your RSVP.", "error");
+        return;
+      }
     }
+    resetForm();
+    createToast("RSVP submitted successfully!", "success");
   }
 }
 
-function getGuestRSVP() {
+export function registerRemoveGuestBtn(removeGuestBtn, row) {
+  removeGuestBtn.addEventListener("click", () => {
+    row.remove();
+    guestIndex -= 1;
+  });
+}
+
+function getGuestRSVP(index) {
   let guest = {};
-  guest.firstName = document.getElementById("firstNameInput").value;
-  guest.lastName = document.getElementById("lastNameInput").value;
+  console.log(`Getting guest ${index}`);
+  guest.firstName = document.getElementById(`firstNameInput${index}`).value;
+  guest.lastName = document.getElementById(`lastNameInput${index}`).value;
   guest.willAttend =
-    document.querySelector('input[name="rsvp-selection"]:checked').value ==
-    "true"
+    document.querySelector(`input[name="rsvp-selection"]:checked`)
+      .value == "true"
       ? true
       : false;
   return guest;
