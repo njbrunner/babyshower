@@ -27,9 +27,8 @@ a {
 }
 
 .card-main {
-  margin-bottom: 50px;
   max-width: 1000px;
-  height: 70vh;
+  height: 85vh;
   box-shadow: 0 5px 10px rgb(0 0 0 / 0.5);
   color: var(--primary);
   background-color: var(--secondary);
@@ -47,44 +46,44 @@ a {
 }
 
 .btn.btn-icon {
-  padding: 8px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 1rem .75rem;
 }
 
-@media only screen and (max-width: 600px) {
+.margin-top-responsive {
+  margin-top: 5rem;
+}
+
+@media only screen and (max-width: 1200px) {
   .image-test {
-    margin-left: -30%;
+    margin-left: -4rem;
   }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 992px) {
   .image-test {
-    margin-left: -50%;
+    margin-left: -5rem;
   }
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 768px) {
   .image-test {
-    margin-left: -80%;
+    margin-left: -3rem;
   }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 576px) {
   .image-test {
-    margin-left: -100%;
+    margin-left: -6rem;
+  }
+  .margin-top-responsive {
+    margin-top: 1rem;
   }
 }
 
-@media only screen and (max-width: 385px) {
-  .image-test {
-    margin-left: -150%;
-  }
-}
-
-@media only screen and (max-width: 350px) {
-  .image-test {
-    margin-left: -150%;
-  }
-}
 
 .btn.btn-primary {
   background-color: transparent;
