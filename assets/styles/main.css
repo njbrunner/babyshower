@@ -79,6 +79,9 @@ a {
   .image-test {
     margin-left: -6rem;
   }
+}
+
+@media only screen and (max-height: 860px) {
   .margin-top-responsive {
     margin-top: 1rem;
   }
