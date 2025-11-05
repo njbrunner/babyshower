@@ -21,10 +21,12 @@ const addGuestBtn = document.getElementById("addGuestBtn");
 const submitRSVPBtn = document.getElementById("submitRSVPBtn");
 const template = document.getElementById("guestRowTemplate");
 let guestIndex = 0;
+let guestIndexes = [0];
 
 if (addGuestBtn) {
   addGuestBtn.addEventListener("click", () => {
     guestIndex += 1;
+    guestIndexes.push(guestIndex);
     const html = template.innerHTML.replaceAll("{i}", String(guestIndex));
     const wrapper = document.createElement("div");
     wrapper.innerHTML = html.trim();
@@ -42,11 +44,10 @@ if (submitRSVPBtn) {
   });
 }
 
-export async function submitRSVP() {
+export function submitRSVP() {
   if (validate()) {
-    for (let i = 0; i <= guestIndex; i++) {
-      let guest = getGuestRSVP(i);
-      console.log(guest);
+    guestIndexes.forEach(async (index) => {
+      let guest = getGuestRSVP(index);
       try {
         await addDoc(collection(db, "guests"), guest);
       } catch (e) {
@@ -54,7 +55,7 @@ export async function submitRSVP() {
         createToast("There was an error submitting your RSVP.", "error");
         return;
       }
-    }
+    });
     resetForm();
     createToast("RSVP submitted successfully!", "success");
   }
@@ -63,13 +64,13 @@ export async function submitRSVP() {
 export function registerRemoveGuestBtn(removeGuestBtn, row) {
   removeGuestBtn.addEventListener("click", () => {
     row.remove();
-    guestIndex -= 1;
+    let index = guestIndexes.indexOf(parseInt(row.dataset.index));
+    guestIndexes.splice(index, 1);
   });
 }
 
 function getGuestRSVP(index) {
   let guest = {};
-  console.log(`Getting guest ${index}`);
   guest.firstName = document.getElementById(`firstNameInput${index}`).value;
   guest.lastName = document.getElementById(`lastNameInput${index}`).value;
   guest.willAttend =
@@ -108,5 +109,14 @@ function resetForm() {
 
   Array.from(forms).forEach((form) => {
     form.classList.remove("was-validated");
+  });
+
+  guestIndexes = [0];
+  guestIndex = 0;
+  const rows = nameContainer.querySelectorAll(".row");
+  rows.forEach((row, index) => {
+    if (index > 0) {
+      row.remove();
+    }
   });
 }
